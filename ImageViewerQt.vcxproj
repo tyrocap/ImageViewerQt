@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{496D1606-AF7D-4ACC-A21A-7EFEAE0165EE}</ProjectGuid>
+    <Keyword>QtVS_v303</Keyword>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0.18362.0</WindowsTargetPlatformVersion>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <IncludePath>C:\OpenCV\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\OpenCV\x64\vc16\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <IncludePath>C:\OpenCV\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\OpenCV\x64\vc16\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Link>
+      <AdditionalDependencies>opencv_aruco440d.lib;opencv_bgsegm440d.lib;opencv_bioinspired440d.lib;opencv_calib3d440d.lib;opencv_ccalib440d.lib;opencv_core440d.lib;opencv_datasets440d.lib;opencv_dnn440d.lib;opencv_dnn_objdetect440d.lib;opencv_dnn_superres440d.lib;opencv_dpm440d.lib;opencv_face440d.lib;opencv_features2d440d.lib;opencv_flann440d.lib;opencv_fuzzy440d.lib;opencv_gapi440d.lib;opencv_hfs440d.lib;opencv_highgui440d.lib;opencv_imgcodecs440d.lib;opencv_imgproc440d.lib;opencv_img_hash440d.lib;opencv_intensity_transform440d.lib;opencv_line_descriptor440d.lib;opencv_mcc440d.lib;opencv_ml440d.lib;opencv_objdetect440d.lib;opencv_optflow440d.lib;opencv_phase_unwrapping440d.lib;opencv_photo440d.lib;opencv_plot440d.lib;opencv_quality440d.lib;opencv_rapid440d.lib;opencv_reg440d.lib;opencv_rgbd440d.lib;opencv_saliency440d.lib;opencv_shape440d.lib;opencv_stereo440d.lib;opencv_stitching440d.lib;opencv_structured_light440d.lib;opencv_superres440d.lib;opencv_surface_matching440d.lib;opencv_text440d.lib;opencv_tracking440d.lib;opencv_video440d.lib;opencv_videoio440d.lib;opencv_videostab440d.lib;opencv_xfeatures2d440d.lib;opencv_ximgproc440d.lib;opencv_xobjdetect440d.lib;opencv_xphoto440d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Link>
+      <AdditionalDependencies>opencv_aruco440.lib;opencv_bgsegm440.lib;opencv_bioinspired440.lib;opencv_calib3d440.lib;opencv_ccalib440.lib;opencv_core440.lib;opencv_datasets440.lib;opencv_dnn440.lib;opencv_dnn_objdetect440.lib;opencv_dnn_superres440.lib;opencv_dpm440.lib;opencv_face440.lib;opencv_features2d440.lib;opencv_flann440.lib;opencv_fuzzy440.lib;opencv_gapi440.lib;opencv_hfs440.lib;opencv_highgui440.lib;opencv_imgcodecs440.lib;opencv_imgproc440.lib;opencv_img_hash440.lib;opencv_intensity_transform440.lib;opencv_line_descriptor440.lib;opencv_mcc440.lib;opencv_ml440.lib;opencv_objdetect440.lib;opencv_optflow440.lib;opencv_phase_unwrapping440.lib;opencv_photo440.lib;opencv_plot440.lib;opencv_quality440.lib;opencv_rapid440.lib;opencv_reg440.lib;opencv_rgbd440.lib;opencv_saliency440.lib;opencv_shape440.lib;opencv_stereo440.lib;opencv_stitching440.lib;opencv_structured_light440.lib;opencv_superres440.lib;opencv_surface_matching440.lib;opencv_text440.lib;opencv_tracking440.lib;opencv_video440.lib;opencv_videoio440.lib;opencv_videostab440.lib;opencv_xfeatures2d440.lib;opencv_ximgproc440.lib;opencv_xobjdetect440.lib;opencv_xphoto440.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
+    <QtInstall>Qt5.15_x64</QtInstall>
+    <QtModules>core;gui;widgets</QtModules>
+    <QtBuildConfig>debug</QtBuildConfig>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
+    <QtInstall>Qt5.15_x64</QtInstall>
+    <QtModules>core;gui;widgets</QtModules>
+    <QtBuildConfig>release</QtBuildConfig>
+  </PropertyGroup>
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
+    <Import Project="$(QtMsBuild)\qt.props" />
+  </ImportGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ClCompile>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ClCompile>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <Optimization>MaxSpeed</Optimization>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <QtRcc Include="imageviewerqt.qrc" />
+    <QtUic Include="imageviewerqt.ui" />
+    <QtMoc Include="imageviewerqt.h" />
+    <ClCompile Include="imageviewerqt.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
