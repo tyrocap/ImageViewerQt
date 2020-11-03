@@ -86,6 +86,9 @@ void ImageViewerQt::createActions() {
     erodeAction = new QAction("Erode", this);
     editMenu->addAction(erodeAction);
 
+    dilateAction = new QAction("Dilate", this);
+    editMenu->addAction(dilateAction);
+
     // add actions to toolbar
     // FileToolBar
     fileToolBar->addAction(openAction);
@@ -99,7 +102,7 @@ void ImageViewerQt::createActions() {
     // EditToolBar
     editToolBar->addAction(blurAction);
     editToolBar->addAction(erodeAction);
-
+    editToolBar->addAction(dilateAction);
 
     // connect the signals and slots
     connect(openAction, SIGNAL(triggered(bool)), this, SLOT(openImage()));
@@ -111,6 +114,7 @@ void ImageViewerQt::createActions() {
     connect(nextAction, SIGNAL(triggered(bool)), this, SLOT(nextImage()));
     connect(blurAction, SIGNAL(triggered(bool)), this, SLOT(blurImage()));
     connect(erodeAction, SIGNAL(triggered(bool)), this, SLOT(erodeImage()));
+    connect(dilateAction, SIGNAL(triggered(bool)), this, SLOT(dilateImage()));
 
     setupShortcuts();
 }
@@ -266,6 +270,39 @@ void ImageViewerQt::erodeImage() {
         image.bytesPerLine());
     try {
 		cv::erode(mat, mat, cv::Mat(), cv::Point(-1, -1), 1);
+    }
+    catch (const cv::Exception& e) {
+        QMessageBox::information(this, "Information", "There is an error");
+    }
+    QImage image_blurred(
+        mat.data,
+        mat.cols,
+        mat.rows,
+        mat.step,
+        QImage::Format_RGB888
+    );
+    pixmap = QPixmap::fromImage(image_blurred);
+    imageScene->clear();
+    imageView->resetMatrix();
+    currentImage = imageScene->addPixmap(pixmap);
+    imageScene->update();
+    imageView->setSceneRect(pixmap.rect());
+}
+
+
+
+void ImageViewerQt::dilateImage() {
+    QPixmap pixmap = currentImage->pixmap();
+    QImage image = pixmap.toImage();
+    image = image.convertToFormat(QImage::Format_RGB888);
+    cv::Mat mat = cv::Mat(
+        image.height(),
+        image.width(),
+        CV_8UC3,
+        image.bits(),
+        image.bytesPerLine());
+    try {
+		cv::dilate(mat, mat, cv::Mat(), cv::Point(-1, -1), 1);
     }
     catch (const cv::Exception& e) {
         QMessageBox::information(this, "Information", "There is an error");

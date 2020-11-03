@@ -37,6 +37,7 @@ private slots:
     void saveAs();
     void blurImage();
     void erodeImage();
+    void dilateImage();
 
 private:
     QMenu* fileMenu;
@@ -62,6 +63,7 @@ private:
     QAction* nextAction;
     QAction* blurAction;
     QAction* erodeAction;
+    QAction* dilateAction;
 
     QString currentImagePath;
     QGraphicsPixmapItem* currentImage;
