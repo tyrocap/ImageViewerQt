@@ -89,6 +89,9 @@ void ImageViewerQt::createActions() {
     dilateAction = new QAction("Dilate", this);
     editMenu->addAction(dilateAction);
 
+    sharpenAction = new QAction("Sharpen", this);
+    editMenu->addAction(sharpenAction);
+
     // add actions to toolbar
     // FileToolBar
     fileToolBar->addAction(openAction);
@@ -103,6 +106,7 @@ void ImageViewerQt::createActions() {
     editToolBar->addAction(blurAction);
     editToolBar->addAction(erodeAction);
     editToolBar->addAction(dilateAction);
+    editToolBar->addAction(sharpenAction);
 
     // connect the signals and slots
     connect(openAction, SIGNAL(triggered(bool)), this, SLOT(openImage()));
@@ -115,6 +119,7 @@ void ImageViewerQt::createActions() {
     connect(blurAction, SIGNAL(triggered(bool)), this, SLOT(blurImage()));
     connect(erodeAction, SIGNAL(triggered(bool)), this, SLOT(erodeImage()));
     connect(dilateAction, SIGNAL(triggered(bool)), this, SLOT(dilateImage()));
+    connect(sharpenAction, SIGNAL(triggered(bool)), this, SLOT(sharpenImage()));
 
     setupShortcuts();
 }
@@ -312,6 +317,41 @@ void ImageViewerQt::dilateImage() {
         mat.cols,
         mat.rows,
         mat.step,
+        QImage::Format_RGB888
+    );
+    pixmap = QPixmap::fromImage(image_blurred);
+    imageScene->clear();
+    imageView->resetMatrix();
+    currentImage = imageScene->addPixmap(pixmap);
+    imageScene->update();
+    imageView->setSceneRect(pixmap.rect());
+}
+
+
+void ImageViewerQt::sharpenImage() {
+    QPixmap pixmap = currentImage->pixmap();
+    QImage image = pixmap.toImage();
+    image = image.convertToFormat(QImage::Format_RGB888);
+    cv::Mat mat = cv::Mat(
+        image.height(),
+        image.width(),
+        CV_8UC3,
+        image.bits(),
+        image.bytesPerLine());
+    cv::Mat smoothed, result;
+    int intensity = 2;
+    try {
+		cv::GaussianBlur(mat, smoothed, cv::Size(9, 9), 0);
+        result = mat + (mat - smoothed) * intensity;
+    }
+    catch (const cv::Exception& e) {
+        QMessageBox::information(this, "Information", "There is an error");
+    }
+    QImage image_blurred(
+        result.data,
+        result.cols,
+        result.rows,
+        result.step,
         QImage::Format_RGB888
     );
     pixmap = QPixmap::fromImage(image_blurred);

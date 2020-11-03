@@ -1,5 +1,3 @@
-﻿  moc imageviewerqt.h
-  imageviewerqt.cpp
-  main.cpp
+﻿  imageviewerqt.cpp
   moc_imageviewerqt.cpp
   ImageViewerQt.vcxproj -> C:\dev\Cpp\ImageViewerQt\x64\Debug\ImageViewerQt.exe
