@@ -6,6 +6,7 @@
 #include <QDebug>
 #include "imageviewerqt.h"
 #include <opencv2/opencv.hpp> 
+#include <iostream>
 
 ImageViewerQt::ImageViewerQt(QWidget* parent)
     : QMainWindow(parent)
@@ -55,6 +56,7 @@ void ImageViewerQt::initUI() {
 
 void ImageViewerQt::createActions() {
     // create action & add them to menu
+    // FileMenu
     openAction = new QAction("&Open", this);
     fileMenu->addAction(openAction);
 
@@ -64,6 +66,7 @@ void ImageViewerQt::createActions() {
     exitAction = new QAction("E&xit", this);
     fileMenu->addAction(exitAction);
 
+    // ViewMenu
     zoomInAction = new QAction("Zoom in", this);
     viewMenu->addAction(zoomInAction);
 
@@ -76,17 +79,27 @@ void ImageViewerQt::createActions() {
     nextAction = new QAction("&Next Image", this);
     viewMenu->addAction(nextAction);
 
+    // EditMenu
     blurAction = new QAction("Blur", this);
     editMenu->addAction(blurAction);
-    editToolBar->addAction(blurAction);
 
+    erodeAction = new QAction("Erode", this);
+    editMenu->addAction(erodeAction);
 
     // add actions to toolbar
+    // FileToolBar
     fileToolBar->addAction(openAction);
+
+    // ViewToolBar
     viewToolBar->addAction(zoomInAction);
     viewToolBar->addAction(zoomOutAction);
     viewToolBar->addAction(prevAction);
     viewToolBar->addAction(nextAction);
+
+    // EditToolBar
+    editToolBar->addAction(blurAction);
+    editToolBar->addAction(erodeAction);
+
 
     // connect the signals and slots
     connect(openAction, SIGNAL(triggered(bool)), this, SLOT(openImage()));
@@ -97,6 +110,7 @@ void ImageViewerQt::createActions() {
     connect(prevAction, SIGNAL(triggered(bool)), this, SLOT(prevImage()));
     connect(nextAction, SIGNAL(triggered(bool)), this, SLOT(nextImage()));
     connect(blurAction, SIGNAL(triggered(bool)), this, SLOT(blurImage()));
+    connect(erodeAction, SIGNAL(triggered(bool)), this, SLOT(erodeImage()));
 
     setupShortcuts();
 }
@@ -208,10 +222,6 @@ void ImageViewerQt::setupShortcuts() {
 }
 
 void ImageViewerQt::blurImage() {
-    if (currentImage == nullptr) {
-        QMessageBox::information(this, "Information", "No image to edit.");
-        return;
-    }
     QPixmap pixmap = currentImage->pixmap();
     QImage image = pixmap.toImage();
     image = image.convertToFormat(QImage::Format_RGB888);
@@ -220,10 +230,14 @@ void ImageViewerQt::blurImage() {
         image.width(),
         CV_8UC3,
         image.bits(),
-        image.bytesPerLine()
-    );
+        image.bytesPerLine());
     cv::Mat tmp;
-    cv::blur(mat, tmp, cv::Size(8, 8));
+    try {
+		cv::blur(mat, tmp, cv::Size(8, 8));
+    }
+    catch (const cv::Exception& e) {
+        QMessageBox::information(this, "Information", "There is an error");
+    }
     mat = tmp;
     QImage image_blurred(
         mat.data,
@@ -238,4 +252,41 @@ void ImageViewerQt::blurImage() {
     currentImage = imageScene->addPixmap(pixmap);
     imageScene->update();
     imageView->setSceneRect(pixmap.rect());
+}
+
+void ImageViewerQt::erodeImage() {
+    QPixmap pixmap = currentImage->pixmap();
+    QImage image = pixmap.toImage();
+    image = image.convertToFormat(QImage::Format_RGB888);
+    cv::Mat mat = cv::Mat(
+        image.height(),
+        image.width(),
+        CV_8UC3,
+        image.bits(),
+        image.bytesPerLine());
+    try {
+		cv::erode(mat, mat, cv::Mat(), cv::Point(-1, -1), 1);
+    }
+    catch (const cv::Exception& e) {
+        QMessageBox::information(this, "Information", "There is an error");
+    }
+    QImage image_blurred(
+        mat.data,
+        mat.cols,
+        mat.rows,
+        mat.step,
+        QImage::Format_RGB888
+    );
+    pixmap = QPixmap::fromImage(image_blurred);
+    imageScene->clear();
+    imageView->resetMatrix();
+    currentImage = imageScene->addPixmap(pixmap);
+    imageScene->update();
+    imageView->setSceneRect(pixmap.rect());
+}
+
+// TODO: add this function
+// converting Qt's QGraphicsPixmapItem to Opencv's Mat  
+void ImageViewerQt::pixmapToMat(QGraphicsPixmapItem *currentImage, ImageViewerQt *parent, cv::Mat mat) {
+
 }

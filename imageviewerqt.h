@@ -8,6 +8,7 @@
 #include <QStatusBar>
 #include <QLabel>
 #include <QGraphicsPixmapItem>
+#include <opencv2/opencv.hpp>
 #include "ui_imageviewerqt.h"
 
 class ImageViewerQt : public QMainWindow
@@ -24,6 +25,9 @@ private:
     void showImage(QString);
     void setupShortcuts();
 
+    // Qt's image to OpenCV image
+    void pixmapToMat(QGraphicsPixmapItem* currentImage, ImageViewerQt* parent, cv::Mat mat);
+
 private slots:
     void openImage();
     void zoomIn();
@@ -32,6 +36,7 @@ private slots:
     void nextImage();
     void saveAs();
     void blurImage();
+    void erodeImage();
 
 private:
     QMenu* fileMenu;
@@ -56,6 +61,7 @@ private:
     QAction* prevAction;
     QAction* nextAction;
     QAction* blurAction;
+    QAction* erodeAction;
 
     QString currentImagePath;
     QGraphicsPixmapItem* currentImage;
